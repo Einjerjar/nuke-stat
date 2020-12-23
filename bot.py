@@ -46,8 +46,27 @@ async def nuke_info(ctx: Context, gid):
 
 @bot.command(aliases=['nc'], help='get the cover for the nuke')
 async def nuke_cover(ctx: Context, gid):
-    nn = NHentai.get_gallery_info(gid)
-    await ctx.send(nn.cover)
+    ni = get_wrapper(gid)
+    if ni is None:
+        await ctx.send('Sorry pal, don\'t know how to handle that one.')
+        return
+
+    resp: BaseResponse = ni.handle_link(gid)
+
+    await ctx.send(resp.cover)
+
+
+@bot.command(aliases=['gl'])
+async def g_list(ctx: Context):
+    if str(ctx.guild.id) != os.getenv('DEV_GUILD'):
+        return
+
+    g_l = []
+    for i in bot.guilds:
+        i: discord.Guild = i
+        g_l.append('{} @ {}'.format(i.name, i.id))
+
+    await ctx.send('**Joined Guilds**\n{}'.format('\n'.join(g_l)))
 
 
 # @bot.command(aliases=['np'], help='get page x of the nuke')
