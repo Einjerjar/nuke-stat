@@ -25,4 +25,4 @@ class EHHandler:
             'Uploaded': time_format(ee.uploaded),
             'Page Count': ee.length,
             'ID': '{}/{}'.format(ee.id, ee.token)
-        }, ee.cover, discord.Color(0xED2553))
+        }, ee.cover, 'eh', discord.Color(0xBC8F94))

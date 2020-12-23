@@ -11,4 +11,5 @@ class BaseResponse:
     url: str
     fields: Dict[str, str]
     cover: str = ''
+    source: str = ''
     color: discord.Color = discord.Color.blurple()

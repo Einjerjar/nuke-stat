@@ -28,6 +28,8 @@ async def nuke_info(ctx: Context, gid):
 
     resp: BaseResponse = ni.handle_link(gid)
 
+    print(resp.title)
+
     f_embed = discord.Embed(title=resp.title,
                             description='By: {}'.format(resp.author),
                             timestamp=datetime.datetime.utcnow(),
@@ -56,7 +58,7 @@ async def nuke_cover(ctx: Context, gid):
     await ctx.send(resp.cover)
 
 
-@bot.command(aliases=['gl'])
+@bot.command(aliases=['gl'], hidden=True)
 async def g_list(ctx: Context):
     if str(ctx.guild.id) != os.getenv('DEV_GUILD'):
         return

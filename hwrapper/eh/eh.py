@@ -38,7 +38,6 @@ class EHTag:
 
 class EHGalleryInfo:
     def __init__(self, raw_data):
-        print('x', raw_data)
         rd_a = json.loads(raw_data)
         rd = rd_a['gmetadata'][0]
         self.raw_data = rd
@@ -88,7 +87,6 @@ class EHentai:
     def get_gallery_info(cls, g_id):
         f_id = cls.try_parse_g_id(g_id)
 
-        print('y', _EH_REQ_BASE.format(f_id[0], f_id[1]))
         r_data = req.post(_EH_URL_API, data=_EH_REQ_BASE.format(f_id[0], f_id[1]))
         return EHGalleryInfo(r_data.content.decode('utf-8'))
 
