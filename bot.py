@@ -1,10 +1,11 @@
 import datetime
-import discord
 import logging
 import os
 
+import discord
 from discord.ext.commands import Bot, Context
 from dotenv import load_dotenv
+
 from nh import NHentai, NHTagTypes
 
 logging.basicConfig(level=logging.INFO)
@@ -22,50 +23,41 @@ async def on_ready():
 async def nuke_info(ctx: Context, gid: int):
     nn = NHentai.get_gallery_info(gid)
 
-    def filer_tags(tags, type):
-        return [x.name for x in tags if x.type == type]
+    def filer_tags(type):
+        return ', '.join([x.name for x in nn.tags if x.type == type])
 
     # print('{} :: {}'.format(gid, ', '.join([x.name for x in nn.tags])))
 
-    langs = ', '.join(filer_tags(nn.tags, NHTagTypes.LANG))
-    parodies = ', '.join(filer_tags(nn.tags, NHTagTypes.PARODY))
-    groups = ', '.join(filer_tags(nn.tags, NHTagTypes.GROUP))
-    artists = ', '.join(filer_tags(nn.tags, NHTagTypes.ARTIST))
-    characters = ', '.join(filer_tags(nn.tags, NHTagTypes.CHARACTER))
-    categories = ', '.join(filer_tags(nn.tags, NHTagTypes.CATEGORY))
-    tags = ', '.join([x.name for x in nn.tags if x.type == NHTagTypes.TAG])
-    out = nn.title.pr \
-          + '\nArtist: ' + artists \
-          + '\nGroup: ' + groups \
-          + '\nLanguage: ' + langs \
-          + '\nParodies:' + parodies \
-          + '\nCharacters: ' + characters \
-          + '\nCategories: ' + categories \
-          + '\nTags: ' + tags \
-          + '\nPages: ' + str(nn.length)
+    languages = filer_tags(NHTagTypes.LANG)
+    parodies = filer_tags(NHTagTypes.PARODY)
+    groups = filer_tags(NHTagTypes.GROUP)
+    artists = filer_tags(NHTagTypes.ARTIST)
+    characters = filer_tags(NHTagTypes.CHARACTER)
+    categories = filer_tags(NHTagTypes.CATEGORY)
+    tags = filer_tags(NHTagTypes.TAG)
 
-    eOut = discord.Embed(title=nn.title.pr,
-                 description='By: {}'.format(artists),
-                 timestamp=datetime.datetime.utcnow(),
-                 color=discord.Color.blue())
+    f_embed = discord.Embed(title=nn.title.pr,
+                            description='By: {}'.format(artists),
+                            timestamp=datetime.datetime.utcnow(),
+                            color=discord.Color.blue())
     if groups != '':
-        eOut.add_field(name='Group', value=groups)
-    if langs != '':
-        eOut.add_field(name='Language', value=langs)
+        f_embed.add_field(name='Group', value=groups)
+    if languages != '':
+        f_embed.add_field(name='Language', value=languages)
     if parodies != '':
-        eOut.add_field(name='Parodies', value=parodies)
+        f_embed.add_field(name='Parodies', value=parodies)
     if characters != '':
-        eOut.add_field(name='Characters', value=characters)
+        f_embed.add_field(name='Characters', value=characters)
     if categories != '':
-        eOut.add_field(name='Categories', value=categories)
+        f_embed.add_field(name='Categories', value=categories)
     if tags != '':
-        eOut.add_field(name='Tags', value=tags)
-    eOut.add_field(name='Pages', value=nn.length)
-    eOut.add_field(name='ID', value=gid)
-    eOut.set_thumbnail(url=nn.get_cover_url())
+        f_embed.add_field(name='Tags', value=tags)
+    f_embed.add_field(name='Uploaded', value=nn.uploaded)
+    f_embed.add_field(name='Page Count', value=nn.length)
+    f_embed.add_field(name='ID', value=str(gid))
+    f_embed.set_thumbnail(url=nn.get_cover_url())
 
-    await ctx.send(embed=eOut)
+    await ctx.send(embed=f_embed)
 
 
 bot.run(os.getenv('BOT_TOKEN'))
-
