@@ -1,7 +1,7 @@
 import json
-import requests as req
+from enum import Enum, auto
 
-from enum import Enum, unique, auto
+import requests as req
 
 _URL_BASE_PROTOCOL = 'https'
 _NH_URL_ROOT = 'nhentai.net'
@@ -83,7 +83,7 @@ class NHTag:
     def __init__(self, tag):
         self.tag_id = tag['id']
         self.raw_type = tag['type']
-        self.type = NHTagTypes.get_type(tag['type'])
+        self.t_type = NHTagTypes.get_type(tag['type'])
         self.name = tag['name']
         self.url = _NH_URL_TAG.format(tag['url'])
         self.count = tag['count']
@@ -109,6 +109,12 @@ class NHGalleryInfo:
 
     def __repr__(self):
         return '[{}] {}'.format(self.id, self.title.en)
+
+    def filer_tags_raw(self, t_type):
+        return [x for x in self.tags if x.t_type == t_type]
+
+    def filer_tags(self, t_type):
+        return ', '.join([x.name for x in self.filer_tags_raw(t_type)])
 
 
 class NHentai:
