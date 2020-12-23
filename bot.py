@@ -16,7 +16,7 @@ bot = Bot(command_prefix=os.getenv('PREFIX') or '=')
 
 @bot.event
 async def on_ready():
-    print('Logged in as {}#{}'.format(bot.user.name, bot.user.id))
+    print('Logged in as {} | {} | {} | {}'.format(bot.user.name, bot.user.display_name, bot.user.bot, bot.user.id))
 
 
 @bot.command(aliases=['ni'], help='get nuke info')
@@ -62,11 +62,13 @@ async def g_list(ctx: Context):
         return
 
     g_l = []
+    c_l = 0
     for i in bot.guilds:
         i: discord.Guild = i
         g_l.append('{} @ {}'.format(i.name, i.id))
+        c_l += 1
 
-    await ctx.send('**Joined Guilds**\n{}'.format('\n'.join(g_l)))
+    await ctx.send('**Joined {} Guilds**\n{}'.format(c_l, '\n'.join(g_l)))
 
 
 # @bot.command(aliases=['np'], help='get page x of the nuke')

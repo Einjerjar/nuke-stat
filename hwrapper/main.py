@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import List, Any
 
 from .nhwrapper import NHHandler
+from .ehwrapper import EHHandler
 
 
 @dataclass
@@ -23,9 +24,9 @@ class HWrapper:
             if link.startswith(i):
                 return True
         for i in self.patterns.int_patterns:
-            c_pat = re.compile(i.replace('x', '\\d+'))
+            c_pat = re.compile(i)
             c_search = c_pat.search(link)
-            if c_search and c_search.group:
+            if c_search and len(c_search.groups()) > 0:
                 return True
 
     def get_module(self):
@@ -33,7 +34,8 @@ class HWrapper:
 
 
 wrappers: List[HWrapper] = [
-    HWrapper(HPatterns(['nhentai.net', 'g'], ['x']), NHHandler),
+    HWrapper(HPatterns(['e-hentai.org'], [r'g\/(\d+\/[\dabcdef]+)', r'(\d+\/[\dabcdef]+)']), EHHandler),
+    HWrapper(HPatterns(['nhentai.net'], [r'g\/(\d+)', r'(\d+)']), NHHandler),
 ]
 
 
@@ -42,7 +44,3 @@ def get_wrapper(g_id):
         if i.can_handle_link(g_id):
             return i.handler
     return None
-
-
-if __name__ == '__main__':
-    print(get_wrapper('g/339083').handle_link('g/339083'))

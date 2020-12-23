@@ -2,6 +2,7 @@ import discord
 
 from .bases import BaseResponse
 from .nh import *
+from .util import time_format
 
 
 class NHHandler:
@@ -26,7 +27,7 @@ class NHHandler:
             'Characters': characters,
             'Categories': categories,
             'Tags': tags,
-            'Uploaded': nn.uploaded,
+            'Uploaded': time_format(nn.uploaded),
             'Page Count': nn.length,
             'ID': nn.id
         }, nn.cover, discord.Color(0xED2553))

@@ -1,7 +1,7 @@
 import json
-from enum import Enum, auto
-
 import requests as req
+
+from enum import Enum, auto
 
 _URL_BASE_PROTOCOL = 'https'
 _NH_URL_ROOT = 'nhentai.net'
