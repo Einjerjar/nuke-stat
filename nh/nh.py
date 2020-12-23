@@ -1,13 +1,13 @@
-import requests as req
 import json
+import requests as req
 
 from enum import Enum, unique, auto
 
 _URL_BASE_PROTOCOL = 'https'
 _NH_URL_ROOT = 'nhentai.net'
 _NH_URL_BASE = '{}://{}'.format(_URL_BASE_PROTOCOL, _NH_URL_ROOT)
-_NH_URL_API = '{}/api/gallery'.format(_NH_URL_BASE)
-_NH_URL_GAL = '{}/g'.format(_NH_URL_BASE)
+_NH_URL_API_G = '{}/api/gallery/{{}}'.format(_NH_URL_BASE)
+_NH_URL_GAL = '{}/g/{{}}'.format(_NH_URL_BASE)
 
 _NH_THUMB_PRE = 't'
 _NH_IMG_PRE = 'i'
@@ -15,6 +15,8 @@ _NH_IMG_PRE = 'i'
 _NH_URL_COVER = '{}://{}.{}/galleries/{{}}/cover.{{}}'.format(_URL_BASE_PROTOCOL, _NH_THUMB_PRE, _NH_URL_ROOT)
 _NH_URL_THUMB = '{}://{}.{}/galleries/{{}}/thumbnail.{{}}'.format(_URL_BASE_PROTOCOL, _NH_THUMB_PRE, _NH_URL_ROOT)
 _NH_URL_IMG = '{}://{}.{}/galleries/{{}}/{{}}.{{}}'.format(_URL_BASE_PROTOCOL, _NH_IMG_PRE, _NH_URL_ROOT)
+
+_NH_URL_TAG = '{}{{}}'.format(_NH_URL_BASE)
 
 
 class NHPageExts(Enum):
@@ -74,7 +76,7 @@ class NHPage:
         elif self.p_type is NHPageTypes.THUMB:
             return _NH_URL_THUMB.format(self.media_id, self.ext)
 
-        return _NH_URL_IMG.format(self.media_id, self.index, self.ext)
+        return _NH_URL_IMG.format(self.media_id, self.index + 1, self.ext)
 
 
 class NHTag:
@@ -83,7 +85,7 @@ class NHTag:
         self.raw_type = tag['type']
         self.type = NHTagTypes.get_type(tag['type'])
         self.name = tag['name']
-        self.url = tag['url']
+        self.url = _NH_URL_TAG.format(tag['url'])
         self.count = tag['count']
 
 
@@ -103,12 +105,10 @@ class NHGalleryInfo:
         self.length = rd['num_pages']
         self.fav_count = rd['num_favorites']
         self.uploaded = rd['upload_date']
+        self.url = _NH_URL_GAL.format(self.id)
 
     def __repr__(self):
         return '[{}] {}'.format(self.id, self.title.en)
-
-    def get_cover_url(self):
-        return _NH_URL_COVER.format(self.media_id, self.cover.type)
 
 
 class NHentai:
@@ -122,6 +122,8 @@ class NHentai:
             try:
                 f_id = int(f_id)
             except ValueError:
+                if f_id.startswith('<'):
+                    f_id = f_id[1:-1]
                 if f_id.startswith('http'):
                     f_id = int(f_id.split('/')[4])
                 elif f_id.startswith('g/'):
@@ -134,9 +136,10 @@ class NHentai:
     def get_gallery_info(cls, g_id):
         f_id = cls.try_parse_g_id(g_id)
 
-        r_data = req.get('{}/{}/{}'.format(_NH_URL_BASE, _NH_URL_API, str(f_id)))
+        r_data = req.get(_NH_URL_API_G.format(str(f_id)))
         return NHGalleryInfo(r_data.content.decode('utf-8'))
 
 
 if __name__ == '__main__':
-    print(NHentai.try_parse_g_id('g/316574'))
+    nn = NHentai.get_gallery_info('g/339083')
+    print(nn.tags[0].url)
