@@ -21,6 +21,10 @@ async def on_ready():
 
 @bot.command(aliases=['ni'], help='get nuke info')
 async def nuke_info(ctx: Context, gid):
+    gid = str(gid)
+    if gid.startswith('<'):
+        gid = gid[1:-1]
+
     ni = get_wrapper(gid)
     if ni is None:
         await ctx.send('Sorry pal, don\'t know how to handle that one.')

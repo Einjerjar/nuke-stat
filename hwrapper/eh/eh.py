@@ -70,14 +70,13 @@ class EHentai:
     @staticmethod
     def try_parse_g_id(g_id):
         f_id = g_id
-        if f_id.startswith('<'):
-            f_id = f_id[1:-1]
+        f_s = f_id.split('/')
         if f_id.startswith('http'):
-            x = f_id.split('/')
-            f_id = [x[4], x[5]]
-        elif f_id.startswith('g/'):
-            x = f_id.split('/')
-            f_id = [x[2], x[3]]
+            f_id = [f_s[4], f_s[5]]
+        elif f_id.startswith('e-hentai.org'):
+            f_id = [f_s[2], f_s[3]]
+        elif f_id.startswith('g/') or f_id.startswith('eh/'):
+            f_id = [f_s[1], f_s[2]]
         else:
             f_id = f_id.split('/')
         return f_id

@@ -4,6 +4,7 @@ from typing import List, Any
 
 from .nhwrapper import NHHandler
 from .ehwrapper import EHHandler
+from .hnwrapper import HNHandler
 
 
 @dataclass
@@ -20,6 +21,8 @@ class HWrapper:
     handler: Any
 
     def can_handle_link(self, link):
+        if link.startswith('http'):
+            link = link.split('://')[1]
         for i in self.patterns.start:
             if link.startswith(i):
                 return True
@@ -34,8 +37,9 @@ class HWrapper:
 
 
 wrappers: List[HWrapper] = [
-    HWrapper(HPatterns(['e-hentai.org'], [r'g\/(\d+\/[\dabcdef]+)', r'(\d+\/[\dabcdef]+)']), EHHandler),
-    HWrapper(HPatterns(['nhentai.net'], [r'g\/(\d+)', r'(\d+)']), NHHandler),
+    HWrapper(HPatterns(['e-hentai.org', 'eh'], [r'g\/(\d+\/[\dabcdef]+)', r'(\d+\/[\dabcdef]+)']), EHHandler),
+    HWrapper(HPatterns(['hentainexus.com', 'hn'], [r'hn\/(\d+)']), HNHandler),
+    HWrapper(HPatterns(['nhentai.net', 'nh'], [r'g\/(\d+)', r'(\d+)']), NHHandler),
 ]
 
 

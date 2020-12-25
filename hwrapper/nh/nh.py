@@ -128,14 +128,13 @@ class NHentai:
             try:
                 f_id = int(f_id)
             except ValueError:
-                if f_id.startswith('<'):
-                    f_id = f_id[1:-1]
+                f_s = f_id.split('/')
                 if f_id.startswith('http'):
-                    f_id = int(f_id.split('/')[4])
-                elif f_id.startswith('g/'):
-                    f_id = int(f_id.split('/')[1])
+                    f_id = int(f_s[4])
+                elif f_id.startswith('g/') or f_id.startswith('nh/'):
+                    f_id = int(f_s[1])
                 elif f_id.startswith(_NH_URL_ROOT):
-                    f_id = int(f_id.split('/')[2])
+                    f_id = int(f_s[2])
         return f_id
 
     @classmethod
