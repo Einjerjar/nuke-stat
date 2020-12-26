@@ -19,7 +19,7 @@ async def on_ready():
     print('Logged in as {} | {} | {} | {}'.format(bot.user.name, bot.user.display_name, bot.user.bot, bot.user.id))
 
 
-@bot.command(aliases=['ni'], help='get nuke info')
+@bot.command(aliases=['ni'], help='[ni] get nuke\'s info in the format of <source/nuke>')
 async def nuke_info(ctx: Context, gid):
     gid = str(gid)
     if gid.startswith('<'):
@@ -52,7 +52,7 @@ async def nuke_info(ctx: Context, gid):
     await ctx.send(embed=f_embed)
 
 
-@bot.command(aliases=['nc'], help='get the cover for the nuke')
+@bot.command(aliases=['nc'], help='[nc] get the cover for the nuke')
 async def nuke_cover(ctx: Context, gid):
     ni = get_wrapper(gid)
     if ni is None:
@@ -62,6 +62,43 @@ async def nuke_cover(ctx: Context, gid):
     resp: BaseResponse = ni.handle_link(gid)
 
     await ctx.send(resp.cover)
+
+
+@bot.command(aliases=['nl'], help='[nl] list available sources and their prefixes')
+async def nuke_list(ctx: Context):
+    x = [
+        '```md',
+        '# Available sources and their prefixes',
+        '',
+        '- md : Mangadex',
+        '- eh : EHen',
+        '- nh : NHen',
+        '- hc : HCafe',
+        '- hn : HNexus',
+        '```'
+    ]
+
+    await ctx.send('\n'.join(x))
+
+
+@bot.command()
+async def about(ctx: Context):
+    e = discord.Embed(title='About')
+    e.add_field(name='Author', value='[Einjerjar](https://github.com/einjerjar)')
+    e.add_field(name='Source', value='[GH/nuke-stat](https://github.com/einjerjar/nuke-stat)')
+    e.add_field(name='Donate', value='[Buy me a coffee](https://ko-fi/einjerjar)')
+    e.set_thumbnail(url=bot.user.avatar_url)
+    x = [
+        '```md',
+        '# About',
+        '',
+        '- Author: Einjerjar',
+        '- Source: <https://github.com/einjerjar/nuke-stat>',
+        '- Donate: <https://ko-fi/einjerjar>',
+        '```'
+    ]
+
+    await ctx.send(embed=e)
 
 
 @bot.command(aliases=['gl'], hidden=True)
