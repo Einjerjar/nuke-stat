@@ -6,6 +6,7 @@ from hwrapper.wrappers.wrapper_nh import NHHandler
 from hwrapper.wrappers.wrapper_eh import EHHandler
 from hwrapper.wrappers.wrapper_hn import HNHandler
 from hwrapper.wrappers.wrapper_hc import HCHandler
+from hwrapper.wrappers.wrapper_md import MDHandler
 
 
 @dataclass
@@ -39,6 +40,7 @@ class HWrapper:
 
 wrappers: List[HWrapper] = [
     HWrapper(HPatterns(['e-hentai.org', 'eh'], [r'g\/(\d+\/[\dabcdef]+)', r'(\d+\/[\dabcdef]+)']), EHHandler),
+    HWrapper(HPatterns(['mangadex.org', 'md'], [r'md\/(\d+)']), MDHandler),
     HWrapper(HPatterns(['hentainexus.com', 'hn'], [r'hn\/(\d+)']), HNHandler),
     HWrapper(HPatterns(['hentai.cafe', 'hc.fyi', 'hc'], [r'hc\/(\d+)']), HCHandler),
     HWrapper(HPatterns(['nhentai.net', 'nh'], [r'g\/(\d+)', r'(\d+)']), NHHandler),
@@ -55,6 +57,7 @@ def get_wrapper(g_id):
 if __name__ == '__main__':
     tests = [
         'e-hentai.org/g/123/456', 'eh/123/456', 'g/123/456',
+        'mangadex.org/title/59266/nishimori-san-chi-no-shinobu-kun', 'md/59266',
         'hentainexus.com/view/123', 'hn/123',
         'hentai.cafe/hc.fyi/123', 'hc.fyi/123', 'hc/123'
         'nhentai.net/g/123', 'g/123', 'nh/123',

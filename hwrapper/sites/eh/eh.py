@@ -57,6 +57,9 @@ class EHGalleryInfo:
     def __repr__(self):
         return '[{}/{}] {}'.format(self.id, self.token, self.title.en)
 
+    def __str__(self):
+        return self.title
+
     def filter_tags_raw(self, t_type):
         return [x for x in self.tags if x.t_type == t_type]
 

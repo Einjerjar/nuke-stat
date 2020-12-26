@@ -45,6 +45,12 @@ class HNexusGalleryInfo:
         self.id = cover.find_parent('a').attrs['href'].split('/')[2]
         self.url = _HN_VIEW.format(self.id)
 
+    def __repr__(self):
+        return self.title
+
+    def __str__(self):
+        return self.title
+
 
 class HNexus:
     @staticmethod

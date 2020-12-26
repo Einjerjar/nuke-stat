@@ -110,6 +110,9 @@ class NHGalleryInfo:
     def __repr__(self):
         return '[{}] {}'.format(self.id, self.title.en)
 
+    def __str__(self):
+        return self.title
+
     def filer_tags_raw(self, t_type):
         return [x for x in self.tags if x.t_type == t_type]
 
