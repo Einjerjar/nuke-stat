@@ -86,17 +86,8 @@ async def about(ctx: Context):
     e = discord.Embed(title='About')
     e.add_field(name='Author', value='[Einjerjar](https://github.com/einjerjar)')
     e.add_field(name='Source', value='[GH/nuke-stat](https://github.com/einjerjar/nuke-stat)')
-    e.add_field(name='Donate', value='[Buy me a coffee](https://ko-fi/einjerjar)')
+    e.add_field(name='Donate', value='[Buy me a coffee](https://ko-fi.com/einjerjar)')
     e.set_thumbnail(url=bot.user.avatar_url)
-    x = [
-        '```md',
-        '# About',
-        '',
-        '- Author: Einjerjar',
-        '- Source: <https://github.com/einjerjar/nuke-stat>',
-        '- Donate: <https://ko-fi/einjerjar>',
-        '```'
-    ]
 
     await ctx.send(embed=e)
 
