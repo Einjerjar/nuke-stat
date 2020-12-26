@@ -39,11 +39,11 @@ class HWrapper:
 
 
 wrappers: List[HWrapper] = [
-    HWrapper(HPatterns(['e-hentai.org', 'eh'], [r'g\/(\d+\/[\dabcdef]+)', r'(\d+\/[\dabcdef]+)']), EHHandler),
+    HWrapper(HPatterns(['e-hentai.org', 'eh'], [r'g\/(\d+\/[\dabcdef]+)', r'(^\d+\/[\dabcdef]+)']), EHHandler),
     HWrapper(HPatterns(['mangadex.org', 'md'], [r'md\/(\d+)']), MDHandler),
     HWrapper(HPatterns(['hentainexus.com', 'hn'], [r'hn\/(\d+)']), HNHandler),
     HWrapper(HPatterns(['hentai.cafe', 'hc.fyi', 'hc'], [r'hc\/(\d+)']), HCHandler),
-    HWrapper(HPatterns(['nhentai.net', 'nh'], [r'g\/(\d+)', r'(\d+)']), NHHandler),
+    HWrapper(HPatterns(['nhentai.net', 'nh'], [r'g\/(\d+)', r'(^\d+)']), NHHandler),
 ]
 
 
