@@ -2,9 +2,10 @@ import re
 from dataclasses import dataclass
 from typing import List, Any
 
-from .nhwrapper import NHHandler
-from .ehwrapper import EHHandler
-from .hnwrapper import HNHandler
+from hwrapper.wrappers.wrapper_nh import NHHandler
+from hwrapper.wrappers.wrapper_eh import EHHandler
+from hwrapper.wrappers.wrapper_hn import HNHandler
+from hwrapper.wrappers.wrapper_hc import HCHandler
 
 
 @dataclass
@@ -39,6 +40,7 @@ class HWrapper:
 wrappers: List[HWrapper] = [
     HWrapper(HPatterns(['e-hentai.org', 'eh'], [r'g\/(\d+\/[\dabcdef]+)', r'(\d+\/[\dabcdef]+)']), EHHandler),
     HWrapper(HPatterns(['hentainexus.com', 'hn'], [r'hn\/(\d+)']), HNHandler),
+    HWrapper(HPatterns(['hentai.cafe', 'hc.fyi', 'hc'], [r'hc\/(\d+)']), HCHandler),
     HWrapper(HPatterns(['nhentai.net', 'nh'], [r'g\/(\d+)', r'(\d+)']), NHHandler),
 ]
 
@@ -48,3 +50,15 @@ def get_wrapper(g_id):
         if i.can_handle_link(g_id):
             return i.handler
     return None
+
+
+if __name__ == '__main__':
+    tests = [
+        'e-hentai.org/g/123/456', 'eh/123/456', 'g/123/456',
+        'hentainexus.com/view/123', 'hn/123',
+        'hentai.cafe/hc.fyi/123', 'hc.fyi/123', 'hc/123'
+        'nhentai.net/g/123', 'g/123', 'nh/123',
+    ]
+
+    for j in tests:
+        print(get_wrapper(j), j)

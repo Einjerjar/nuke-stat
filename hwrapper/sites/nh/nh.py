@@ -1,22 +1,22 @@
 import json
-import requests as req
-
 from enum import Enum, auto
 
+import requests as req
+
 _URL_BASE_PROTOCOL = 'https'
-_NH_URL_ROOT = 'nhentai.net'
-_NH_URL_BASE = '{}://{}'.format(_URL_BASE_PROTOCOL, _NH_URL_ROOT)
-_NH_URL_API_G = '{}/api/gallery/{{}}'.format(_NH_URL_BASE)
-_NH_URL_GAL = '{}/g/{{}}'.format(_NH_URL_BASE)
+_URL_ROOT = 'nhentai.net'
+_URL_BASE = '{}://{}'.format(_URL_BASE_PROTOCOL, _URL_ROOT)
+_NH_URL_API_G = '{}/api/gallery/{{}}'.format(_URL_BASE)
+_NH_URL_GAL = '{}/g/{{}}'.format(_URL_BASE)
 
 _NH_THUMB_PRE = 't'
 _NH_IMG_PRE = 'i'
 
-_NH_URL_COVER = '{}://{}.{}/galleries/{{}}/cover.{{}}'.format(_URL_BASE_PROTOCOL, _NH_THUMB_PRE, _NH_URL_ROOT)
-_NH_URL_THUMB = '{}://{}.{}/galleries/{{}}/thumbnail.{{}}'.format(_URL_BASE_PROTOCOL, _NH_THUMB_PRE, _NH_URL_ROOT)
-_NH_URL_IMG = '{}://{}.{}/galleries/{{}}/{{}}.{{}}'.format(_URL_BASE_PROTOCOL, _NH_IMG_PRE, _NH_URL_ROOT)
+_NH_URL_COVER = '{}://{}.{}/galleries/{{}}/cover.{{}}'.format(_URL_BASE_PROTOCOL, _NH_THUMB_PRE, _URL_ROOT)
+_NH_URL_THUMB = '{}://{}.{}/galleries/{{}}/thumbnail.{{}}'.format(_URL_BASE_PROTOCOL, _NH_THUMB_PRE, _URL_ROOT)
+_NH_URL_IMG = '{}://{}.{}/galleries/{{}}/{{}}.{{}}'.format(_URL_BASE_PROTOCOL, _NH_IMG_PRE, _URL_ROOT)
 
-_NH_URL_TAG = '{}{{}}'.format(_NH_URL_BASE)
+_NH_URL_TAG = '{}{{}}'.format(_URL_BASE)
 
 
 class NHPageExts(Enum):
@@ -122,29 +122,27 @@ class NHentai:
         pass
 
     @staticmethod
-    def try_parse_g_id(g_id):
-        f_id = g_id
-        if type(f_id) == str:
-            try:
-                f_id = int(f_id)
-            except ValueError:
-                f_s = f_id.split('/')
-                if f_id.startswith('http'):
-                    f_id = int(f_s[4])
-                elif f_id.startswith('g/') or f_id.startswith('nh/'):
-                    f_id = int(f_s[1])
-                elif f_id.startswith(_NH_URL_ROOT):
-                    f_id = int(f_s[2])
-        return f_id
+    def try_parse_link(link):
+        f_id = link
+        sp = f_id.split('/')
+
+        if f_id.startswith(_URL_ROOT):
+            f_id = int(sp[2])
+        elif f_id.startswith('g/') or f_id.startswith('nh/'):
+            f_id = int(sp[1])
+        elif f_id.startswith(_URL_ROOT):
+            f_id = int(sp[2])
+        return str(f_id)
 
     @classmethod
-    def get_gallery_info(cls, g_id):
-        f_id = cls.try_parse_g_id(g_id)
+    def get_gallery_info(cls, link):
+        gallery_id = cls.try_parse_link(link)
 
-        r_data = req.get(_NH_URL_API_G.format(str(f_id)))
+        r_data = req.get(_NH_URL_API_G.format(gallery_id))
         return NHGalleryInfo(r_data.content.decode('utf-8'))
 
 
 if __name__ == '__main__':
-    nn = NHentai.get_gallery_info('g/339083')
-    print(nn.tags[0].url)
+    u = ['nhentai.net/g/339083', 'g/339083', 'nh/339083']
+    for i in u:
+        print(NHentai.try_parse_link(i), i)

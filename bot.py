@@ -44,6 +44,8 @@ async def nuke_info(ctx: Context, gid):
         if len(str(resp.fields[x]).strip()) > 0:
             f_embed.add_field(name=x, value=resp.fields[x])
 
+    f_embed.add_field(name='Source', value='{}/{}'.format(resp.source, resp.gallery_id))
+
     if len(str(resp.cover).strip()) > 0:
         f_embed.set_thumbnail(url=resp.cover)
 

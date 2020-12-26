@@ -10,6 +10,7 @@ class BaseResponse:
     author: str
     url: str
     fields: Dict[str, str]
+    gallery_id: str
     cover: str = ''
     source: str = ''
-    color: discord.Color = discord.Color.blurple()
+    color: int = 0x7289da

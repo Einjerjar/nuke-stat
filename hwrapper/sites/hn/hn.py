@@ -2,11 +2,15 @@ import requests as req
 
 from bs4 import BeautifulSoup
 
-
 _URL_BASE_PROTOCOL = 'https'
-_HN_URL_ROOT = 'hentainexus.com'
-_HN_URL_BASE = '{}://{}'.format(_URL_BASE_PROTOCOL, _HN_URL_ROOT)
-_HN_VIEW = '{}/view/{{}}'.format(_HN_URL_BASE)
+_URL_ROOT = 'hentainexus.com'
+_URL_BASE = '{}://{}'.format(_URL_BASE_PROTOCOL, _URL_ROOT)
+
+_SCRAPE_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'
+}
+
+_HN_VIEW = '{}/view/{{}}'.format(_URL_BASE)
 
 
 class HNexusGalleryInfo:
@@ -21,7 +25,7 @@ class HNexusGalleryInfo:
             temp = [x for x in cols[1] if x != '\n' and x != ' ']
             for i in range(len(temp)):
                 x = temp[i]
-                if hasattr(x, 'find_all') and len(x.find_all('span', {'class':'tag'})) > 0:
+                if hasattr(x, 'find_all') and len(x.find_all('span', {'class': 'tag'})) > 0:
                     temp[i] = x.find('a')
             temp = [x.text.strip() if hasattr(x, 'find_all') else x.strip() for x in temp]
             rd[cols[0].text] = ', '.join(temp)
@@ -44,26 +48,26 @@ class HNexusGalleryInfo:
 
 class HNexus:
     @staticmethod
-    def try_parse_g_id(g_id):
-        f_id = g_id
-        f_s = f_id.split('/')
-        if f_id.startswith('http'):
-            f_id = f_s[4]
-        elif f_id.startswith('hentainexus.com'):
-            f_id = f_s[2]
-        elif f_id.startswith('hn'):
-            f_id = f_s[1]
-        return f_id
+    def try_parse_link(link):
+        f_link = link
+        sp = f_link.split('/')
+
+        if f_link.startswith(_URL_ROOT):
+            f_link = sp[2]
+        elif f_link.startswith('hn'):
+            f_link = sp[1]
+        return f_link
 
     @classmethod
     def get_gallery_info(cls, link):
-        f_id = cls.try_parse_g_id(link)
-        r_data = req.get(_HN_VIEW.format(f_id), headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 ('
-                                                      'KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'})
+        gallery_id = cls.try_parse_link(link)
+
+        r_data = req.get(_HN_VIEW.format(gallery_id), headers=_SCRAPE_HEADERS)
         return HNexusGalleryInfo(r_data.content.decode('utf-8'))
 
 
 if __name__ == '__main__':
+    u = ['hentainexus.com/view/8200', 'hn/8200']
+    for i in u:
+        print(HNexus.try_parse_link(i), i)
     url = 'https://hentainexus.com/view/8200'
-    x = HNexus.get_gallery_info(url)
-    print(x.cover, x.title, x.id, x.url)

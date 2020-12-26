@@ -1,8 +1,5 @@
-import discord
-
-from .bases import BaseResponse
-from .hn import *
-from .util import time_format
+from hwrapper.bases import BaseResponse
+from hwrapper.sites.hn import *
 
 
 class HNHandler:
@@ -18,5 +15,5 @@ class HNHandler:
             'Parodies': hh.parody,
             'Tags': ', '.join(hh.tags),
             'Page Count': hh.length,
-            'ID': hh.id
-        }, hh.cover, 'eh', discord.Color(0xDF691A))
+            # 'ID': hh.id
+        }, hh.id, hh.cover, 'eh', 0xDF691A)

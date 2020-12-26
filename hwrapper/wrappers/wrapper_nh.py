@@ -1,8 +1,6 @@
-import discord
-
-from .bases import BaseResponse
-from .nh import *
-from .util import time_format
+from hwrapper.bases import BaseResponse
+from hwrapper.sites.nh import *
+from hwrapper.util import time_format
 
 
 class NHHandler:
@@ -29,5 +27,5 @@ class NHHandler:
             'Tags': tags,
             'Uploaded': time_format(nn.uploaded),
             'Page Count': nn.length,
-            'ID': nn.id
-        }, nn.cover, 'nh', discord.Color(0xED2553))
+            # 'ID': nn.id
+        }, nn.id, nn.cover, 'nh', 0xED2553)

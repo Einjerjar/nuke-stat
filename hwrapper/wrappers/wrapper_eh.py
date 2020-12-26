@@ -1,8 +1,6 @@
-import discord
-
-from .bases import BaseResponse
-from .eh import *
-from .util import time_format
+from hwrapper.bases import BaseResponse
+from hwrapper.sites.eh import *
+from hwrapper.util import time_format
 
 
 class EHHandler:
@@ -24,5 +22,5 @@ class EHHandler:
             'Female': female,
             'Uploaded': time_format(ee.uploaded),
             'Page Count': ee.length,
-            'ID': '{}/{}'.format(ee.id, ee.token)
-        }, ee.cover, 'eh', discord.Color(0xBC8F94))
+            # 'ID': '{}/{}'.format(ee.id, ee.token)
+        }, '{}/{}'.format(ee.id, ee.token), ee.cover, 'eh', 0xBC8F94)

@@ -1,14 +1,15 @@
 import json
+from enum import Enum
+
 import requests as req
 
-from enum import Enum, auto
-
 _URL_BASE_PROTOCOL = 'https'
-_EH_URL_ROOT = 'e-hentai.org'
-_EH_URL_BASE = '{}://{}'.format(_URL_BASE_PROTOCOL, _EH_URL_ROOT)
-_EH_URL_GAL = '{}/g/{{}}/{{}}'.format(_EH_URL_BASE)
-_EH_URL_API = '{}://api.{}/api.php'.format(_URL_BASE_PROTOCOL, _EH_URL_ROOT)
+_URL_ROOT = 'e-hentai.org'
+_URL_BASE = '{}://{}'.format(_URL_BASE_PROTOCOL, _URL_ROOT)
+_EH_URL_GAL = '{}/g/{{}}/{{}}'.format(_URL_BASE)
+_EH_URL_API = '{}://api.{}/api.php'.format(_URL_BASE_PROTOCOL, _URL_ROOT)
 _EH_REQ_BASE = '{{ "method": "gdata", "gidlist": [[ {}, "{}" ]], "namespace": 1 }}'
+
 
 class EHTitle:
     def __init__(self, rd):
@@ -68,28 +69,27 @@ class EHentai:
         pass
 
     @staticmethod
-    def try_parse_g_id(g_id):
-        f_id = g_id
-        f_s = f_id.split('/')
-        if f_id.startswith('http'):
-            f_id = [f_s[4], f_s[5]]
-        elif f_id.startswith('e-hentai.org'):
-            f_id = [f_s[2], f_s[3]]
-        elif f_id.startswith('g/') or f_id.startswith('eh/'):
-            f_id = [f_s[1], f_s[2]]
-        else:
-            f_id = f_id.split('/')
-        return f_id
+    def try_parse_link(link):
+        f_link = link
+        sp = f_link.split('/')
 
+        if f_link.startswith(_URL_ROOT):
+            f_link = [sp[2], sp[3]]
+        elif f_link.startswith('g/') or f_link.startswith('eh/'):
+            f_link = [sp[1], sp[2]]
+        else:
+            f_link = f_link.split('/')
+        return f_link
 
     @classmethod
-    def get_gallery_info(cls, g_id):
-        f_id = cls.try_parse_g_id(g_id)
+    def get_gallery_info(cls, link):
+        gallery_id = cls.try_parse_link(link)
 
-        r_data = req.post(_EH_URL_API, data=_EH_REQ_BASE.format(f_id[0], f_id[1]))
+        r_data = req.post(_EH_URL_API, data=_EH_REQ_BASE.format(gallery_id[0], gallery_id[1]))
         return EHGalleryInfo(r_data.content.decode('utf-8'))
 
 
 if __name__ == '__main__':
-    ee = EHentai.get_gallery_info('https://e-hentai.org/g/1771363/6be2d60f02/')
-    print(ee)
+    u = ['e-hentai.org/g/1771363/6be2d60f02/', 'g/1771363/6be2d60f02/', 'eh/1771363/6be2d60f02/']
+    for i in u:
+        print(EHentai.try_parse_link(i), i)
