@@ -94,9 +94,11 @@ async def about(ctx: Context):
 
 @bot.command(aliases=['gl'], hidden=True)
 async def g_list(ctx: Context):
+    # Hard coded command for checking all joined guilds, only works on testing server
     if str(ctx.guild.id) != os.getenv('DEV_GUILD'):
         return
 
+    # Might remove the guild name chunk if guild count goes over 20 or so
     g_l = []
     c_l = 0
     for i in bot.guilds:
@@ -105,16 +107,6 @@ async def g_list(ctx: Context):
         c_l += 1
 
     await ctx.send('**Joined {} Guilds**\n{}'.format(c_l, '\n'.join(g_l)))
-
-
-# @bot.command(aliases=['np'], help='get page x of the nuke')
-# async def nuke_page(ctx: Context, gid, page:int):
-#     page -= 1
-#     nn = NHentai.get_gallery_info(gid)
-#     if nn.length > page >= 0:
-#         await ctx.send(nn.page_info[page])
-#     else:
-#         await ctx.send('Page out of bounds ma boi')
 
 
 bot.run(os.getenv('BOT_TOKEN'))
