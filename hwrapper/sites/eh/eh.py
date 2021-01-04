@@ -68,6 +68,8 @@ class EHGalleryInfo:
 
 
 class EHentai:
+    ident = 'eh'
+
     def __init__(self):
         pass
 

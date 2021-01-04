@@ -93,6 +93,12 @@ class NHGalleryInfo:
     def __init__(self, raw_data):
         rd = json.loads(raw_data)
         self.raw_data = rd
+        self.valid = True
+
+        if 'error' in rd:
+            self.valid = False
+            return
+
         self.id = rd['id']
         self.media_id = rd['media_id']
         self.title = NHTitle(rd['title'])
@@ -121,8 +127,7 @@ class NHGalleryInfo:
 
 
 class NHentai:
-    def __init__(self):
-        pass
+    ident = 'nh'
 
     @staticmethod
     def try_parse_link(link):

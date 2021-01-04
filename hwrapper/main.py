@@ -7,6 +7,7 @@ from hwrapper.wrappers.wrapper_eh import EHHandler
 from hwrapper.wrappers.wrapper_hn import HNHandler
 from hwrapper.wrappers.wrapper_hc import HCHandler
 from hwrapper.wrappers.wrapper_md import MDHandler
+from hwrapper.wrappers.wrapper_h2 import H2Handler
 
 
 @dataclass
@@ -40,6 +41,7 @@ class HWrapper:
 
 wrappers: List[HWrapper] = [
     HWrapper(HPatterns(['e-hentai.org', 'eh'], [r'g\/(\d+\/[\dabcdef]+)', r'(^\d+\/[\dabcdef]+)']), EHHandler),
+    HWrapper(HPatterns(['hentai2read.com', 'h2'], []), H2Handler),
     HWrapper(HPatterns(['mangadex.org', 'md'], [r'md\/(\d+)']), MDHandler),
     HWrapper(HPatterns(['hentainexus.com', 'hn'], [r'hn\/(\d+)']), HNHandler),
     HWrapper(HPatterns(['hentai.cafe', 'hc.fyi', 'hc'], [r'hc\/(\d+)']), HCHandler),
@@ -61,6 +63,7 @@ if __name__ == '__main__':
         'hentainexus.com/view/123', 'hn/123',
         'hentai.cafe/hc.fyi/123', 'hc.fyi/123', 'hc/123'
         'nhentai.net/g/123', 'g/123', 'nh/123',
+        'hentai2read.com/koiito_kinenbi/', 'h2/koiito_kinenbi'
     ]
 
     for j in tests:

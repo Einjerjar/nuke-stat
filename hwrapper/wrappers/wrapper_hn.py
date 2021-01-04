@@ -16,4 +16,4 @@ class HNHandler:
             'Tags': ', '.join(hh.tags),
             'Page Count': hh.length,
             # 'ID': hh.id
-        }, hh.id, hh.cover, 'eh', 0xDF691A)
+        }, hh.id, hh.cover, HNexus.ident, 0xDF691A)

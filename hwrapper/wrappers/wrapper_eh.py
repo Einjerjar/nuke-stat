@@ -23,4 +23,4 @@ class EHHandler:
             'Uploaded': time_format(ee.uploaded),
             'Page Count': ee.length,
             # 'ID': '{}/{}'.format(ee.id, ee.token)
-        }, '{}/{}'.format(ee.id, ee.token), ee.cover, 'eh', 0xBC8F94)
+        }, '{}/{}'.format(ee.id, ee.token), ee.cover, EHentai.ident, 0xBC8F94)

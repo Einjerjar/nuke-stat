@@ -7,7 +7,8 @@ _URL_ROOT = 'hentai.cafe/hc.fyi'
 _URL_BASE = '{}://{}'.format(_URL_BASE_PROTOCOL, _URL_ROOT)
 
 _SCRAPE_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                  'Chrome/60.0.3112.90 Safari/537.36 '
 }
 
 _HC_VIEW = '{}/{{}}'.format(_URL_BASE)
@@ -15,7 +16,7 @@ _HC_VIEW = '{}/{{}}'.format(_URL_BASE)
 
 class HCafeGalleryInfo:
     def __init__(self, raw_data, gallery_id):
-        open('sad.html', 'w').write(raw_data)
+        # open('./sad.html', 'w').write(raw_data)
         soup = BeautifulSoup(raw_data, 'html.parser')
         self.raw_html = raw_data
 
@@ -48,14 +49,16 @@ class HCafeGalleryInfo:
 
         self.length = len(page_count)
 
-    def __repr__(self):
-        pass
-
     def __str__(self):
         return self.title
 
+    def __repr__(self):
+        return self.__str__()
+
 
 class HCafe:
+    ident = 'hc'
+
     @staticmethod
     def try_parse_link(link):
         f_link = link

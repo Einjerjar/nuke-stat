@@ -72,6 +72,7 @@ class MangadexGalleryInfo:
 
 class Mangadex:
     tags = tags
+    ident = 'md'
 
     @staticmethod
     def try_parse_link(link):

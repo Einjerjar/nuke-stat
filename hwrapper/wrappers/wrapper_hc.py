@@ -11,4 +11,4 @@ class HCHandler:
             'Tags': ', '.join(hh.tags),
             'Page Count': hh.length,
             # 'ID': hh.id
-        }, hh.id, hh.cover, 'hc', 0x1E73BE)
+        }, hh.id, hh.cover, HCafe.ident, 0x1E73BE)

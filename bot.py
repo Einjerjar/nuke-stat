@@ -32,6 +32,10 @@ async def nuke_info(ctx: Context, gid):
 
     resp: BaseResponse = ni.handle_link(gid)
 
+    if resp is None:
+        await ctx.send('That gallery doesn\'t exist tho?')
+        return
+
     print(resp.title)
 
     f_embed = discord.Embed(title=resp.title,
@@ -60,6 +64,10 @@ async def nuke_cover(ctx: Context, gid):
         return
 
     resp: BaseResponse = ni.handle_link(gid)
+
+    if resp is None:
+        await ctx.send('That gallery doesn\'t exist tho?')
+        return
 
     await ctx.send(resp.cover)
 

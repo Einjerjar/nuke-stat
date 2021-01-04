@@ -12,4 +12,4 @@ class MDHandler:
             'Tags': ', '.join([str(x) for x in hh.tags]),
             'Rating': str(hh.rating),
             # 'ID': hh.id
-        }, hh.id, hh.cover, 'eh', 0xDF691A)
+        }, hh.id, hh.cover, Mangadex.ident, 0xDF691A)

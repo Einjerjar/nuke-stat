@@ -53,6 +53,8 @@ class HNexusGalleryInfo:
 
 
 class HNexus:
+    ident = 'hn'
+
     @staticmethod
     def try_parse_link(link):
         f_link = link

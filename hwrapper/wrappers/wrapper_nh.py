@@ -8,6 +8,9 @@ class NHHandler:
     def handle_link(link):
         nn = NHentai.get_gallery_info(link)
 
+        if not nn.valid:
+            return None
+
         languages = nn.filer_tags(NHTagTypes.LANG)
         parodies = nn.filer_tags(NHTagTypes.PARODY)
         groups = nn.filer_tags(NHTagTypes.GROUP)
@@ -28,4 +31,4 @@ class NHHandler:
             'Uploaded': time_format(nn.uploaded),
             'Page Count': nn.length,
             # 'ID': nn.id
-        }, nn.id, nn.cover, 'nh', 0xED2553)
+        }, nn.id, nn.cover, NHentai.ident, 0xED2553)
