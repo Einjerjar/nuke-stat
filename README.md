@@ -7,6 +7,7 @@ A simple discord bot that fetches information about doujins and mangas from vari
 - HentaiNexus _(partial, scraped)_
 - HentaiCafe _(partial, scraped)_
 - Mangadex _(partial, provided api)_
+- Hentai2Read _(partial, scraped)_
 
 &#42; Modules marked `provided api` makes use of the official apis provided by the site
 
