@@ -1,4 +1,11 @@
 # Nuke Stat
+
+``` md
+## Repo archived
+HC and HN are dead, NH has had lots of API changes, and I'm too lazy.
+Might work on a rewrite sometime later, no guarantees.
+```
+
 A simple discord bot that fetches information about doujins and mangas from various supported sites. Also contains stuff for hosting directly on heroku.
 
 ### Supported sites
